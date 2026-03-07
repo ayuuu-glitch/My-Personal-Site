@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rajesh &amp; Rachana — Sacred Union</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&family=Pinyon+Script&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --saffron: #f4880a;
+      --saffron-light: #fbbf49;
+      --parchment: #fdf6ec;
+      --parchment-dark: #f5e6cc;
+      --ink: #1e1208;
+      --gold: #c9900a;
+      --gold-light: #e2b045;
+      --gold-pale: #f8e9b0;
+      --crimson: #a0132a;
+      --magenta: #b52270;
+      --ash: #8a7560;
+      --charcoal: #2e2015;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background-color: var(--parchment); color: var(--ink); font-family: 'Cormorant Garamond', serif; overflow-x: hidden; }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 999; opacity: 0.5;
+    }
+
+    /* ── Floating petals ── */
+    .petals-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 998; overflow: hidden; }
+    .petal { position: absolute; top: -60px; animation: fall linear infinite; }
+    @keyframes fall {
+      0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.9; }
+      50%  { transform: translateY(50vh) rotate(200deg) translateX(35px); }
+      100% { transform: translateY(110vh) rotate(360deg) translateX(-20px); opacity: 0; }
+    }
+
+    /* ── Garland strip ── */
+    .garland-top {
+      position: absolute; top: 0; left: 0; right: 0; height: 22px;
+      background: repeating-linear-gradient(90deg,
+        #f4880a 0, #f4880a 14px,
+        #fbbf49 14px, #fbbf49 28px,
+        #e2b045 28px, #e2b045 42px,
+        #a0132a 42px, #a0132a 56px,
+        #f4880a 56px, #f4880a 70px);
+      opacity: 0.9;
+    }
+    .garland-top::after {
+      content: '';
+      position: absolute; bottom: -9px; left: 0; right: 0; height: 9px;
+      background: radial-gradient(circle 9px at 14px 0, #f4880a 70%, transparent 70%),
+                  radial-gradient(circle 9px at 42px 0, #fbbf49 70%, transparent 70%);
+      background-size: 56px 9px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      position: relative; padding: 5rem 2rem 5rem; text-align: center;
+      background:
+        radial-gradient(ellipse 90% 70% at 50% 0%, rgba(244,136,10,0.2) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 40% at 10% 90%, rgba(181,34,112,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 50% at 90% 80%, rgba(160,19,42,0.1) 0%, transparent 50%),
+        linear-gradient(180deg, #fffaf2 0%, #fdf6ec 60%, #f9ecd8 100%);
+    }
+
+    /* Mandalas */
+    .mandala-bg { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: min(700px,90vw); height: min(700px,90vw); opacity: 0.08; animation: spin 120s linear infinite; }
+    .mandala-bg-2 { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: min(480px,65vw); height: min(480px,65vw); opacity: 0.06; animation: spin 70s linear infinite reverse; }
+    @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+    /* Corners */
+    .corner { position: absolute; width: 70px; height: 70px; }
+    .corner-tl { top: 1.5rem; left: 1.5rem; border-top: 2px solid rgba(201,144,10,0.55); border-left: 2px solid rgba(201,144,10,0.55); }
+    .corner-tr { top: 1.5rem; right: 1.5rem; border-top: 2px solid rgba(201,144,10,0.55); border-right: 2px solid rgba(201,144,10,0.55); }
+    .corner-bl { bottom: 5rem; left: 1.5rem; border-bottom: 2px solid rgba(201,144,10,0.55); border-left: 2px solid rgba(201,144,10,0.55); }
+    .corner-br { bottom: 5rem; right: 1.5rem; border-bottom: 2px solid rgba(201,144,10,0.55); border-right: 2px solid rgba(201,144,10,0.55); }
+
+    /* Top ornament */
+    .top-ornament {
+      position: absolute; top: 2.8rem; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 0.75rem; white-space: nowrap;
+      opacity: 0; animation: fadeDown 1s ease 0.3s forwards;
+    }
+    .ornament-line { width: 70px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
+    .ornament-line.rev { background: linear-gradient(to left, transparent, var(--gold)); }
+    .ornament-dot { width: 5px; height: 5px; background: var(--saffron); border-radius: 50%; }
+
+    /* OM */
+    .om-symbol {
+      font-size: 2.2rem; color: var(--gold); display: block;
+      margin-bottom: 0.3rem;
+      opacity: 0; animation: fadeUp 1s ease 0.4s forwards;
+      text-shadow: 0 0 25px rgba(201,144,10,0.5);
+    }
+
+    /* Ganesha */
+    .ganesha-container {
+      position: relative; margin-bottom: 0.5rem;
+      opacity: 0; animation: floatIn 1.5s cubic-bezier(0.34,1.5,0.64,1) 0.5s forwards;
+    }
+    .ganesha-halo {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 210px; height: 210px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(251,191,73,0.45) 0%, rgba(244,136,10,0.15) 50%, transparent 70%);
+      animation: pulseHalo 3s ease-in-out infinite;
+    }
+    @keyframes pulseHalo { 0%,100% { transform: translate(-50%,-50%) scale(1); } 50% { transform: translate(-50%,-50%) scale(1.14); } }
+    .ganesha-svg {
+      width: 185px; height: 210px; position: relative; z-index: 2;
+      filter: drop-shadow(0 10px 28px rgba(201,144,10,0.4));
+    }
+
+    .shri-text {
+      font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.5em;
+      color: var(--saffron); text-transform: uppercase;
+      opacity: 0; animation: fadeUp 1s ease 2s forwards;
+    }
+    .ritual-label {
+      font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.4em;
+      color: var(--saffron); text-transform: uppercase; margin: 1.5rem 0 1rem;
+      opacity: 0; animation: fadeUp 1s ease 2.2s forwards;
+    }
+
+    /* Names */
+    .names-wrapper { margin-bottom: 1.25rem; opacity: 0; animation: fadeUp 1.2s ease 2.4s forwards; }
+    .name-groom, .name-bride {
+      font-family: 'Pinyon Script', cursive;
+      font-size: clamp(4.5rem, 11vw, 8rem); line-height: 1; display: block;
+      background: linear-gradient(135deg, #7a0e1e 0%, #c9900a 50%, #a0132a 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      filter: drop-shadow(0 2px 5px rgba(201,144,10,0.25));
+    }
+    .names-divider { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin: 0.4rem 0; }
+    .div-line { flex: 1; max-width: 100px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-light), transparent); }
+    .div-symbol { font-family: 'Cinzel', serif; font-size: 0.85rem; color: var(--gold); letter-spacing: 0.12em; }
+
+    /* Verse */
+    .sacred-verse {
+      font-family: 'IM Fell English', serif; font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.2rem); color: var(--ash);
+      max-width: 460px; line-height: 1.9; margin: 1.25rem auto;
+      opacity: 0; animation: fadeUp 1s ease 2.7s forwards;
+    }
+
+    /* Request */
+    .request-block { margin-top: 2rem; opacity: 0; animation: fadeUp 1s ease 2.9s forwards; }
+    .request-block p { font-size: clamp(0.95rem, 2vw, 1.1rem); color: var(--charcoal); letter-spacing: 0.05em; line-height: 2.1; }
+    .family-name { font-family: 'Cinzel', serif; font-size: 1rem; color: var(--crimson); letter-spacing: 0.12em; }
+
+    /* Date seal */
+    .date-seal { margin-top: 2.5rem; opacity: 0; animation: fadeUp 1s ease 3.1s forwards; display: flex; flex-direction: column; align-items: center; }
+    .seal-ring {
+      width: 152px; height: 152px; border-radius: 50%;
+      border: 1.5px solid var(--gold-light);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      position: relative;
+      background: radial-gradient(circle, rgba(251,191,73,0.15) 0%, transparent 70%);
+      box-shadow: 0 0 0 6px rgba(201,144,10,0.09), 0 0 0 14px rgba(201,144,10,0.04), inset 0 0 20px rgba(244,136,10,0.07);
+    }
+    .seal-ring::before { content: ''; position: absolute; inset: 8px; border-radius: 50%; border: 1px dashed rgba(201,144,10,0.35); }
+    .seal-month { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.3em; color: var(--saffron); text-transform: uppercase; }
+    .seal-day { font-family: 'Cormorant Garamond', serif; font-size: 3.2rem; font-weight: 300; color: var(--ink); line-height: 1; }
+    .seal-year { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--ash); }
+
+    /* Scroll cue */
+    .scroll-cue {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      opacity: 0; animation: fadeIn 1s ease 4s forwards;
+    }
+    .scroll-cue span { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.3em; color: var(--ash); text-transform: uppercase; }
+    .scroll-line { width: 1px; height: 38px; background: linear-gradient(to bottom, var(--gold-light), transparent); animation: pulseLine 2s ease infinite; }
+    @keyframes pulseLine { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
+
+    /* ── SHARED SECTION ── */
+    .section-label { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.45em; color: var(--saffron); text-transform: uppercase; text-align: center; margin-bottom: 0.75rem; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 300; text-align: center; color: var(--ink); margin-bottom: 2.5rem; }
+    .divider-ornament { display: flex; align-items: center; justify-content: center; gap: 1rem; margin: 1.5rem auto 2.5rem; max-width: 280px; }
+    .do-line { flex: 1; height: 1px; background: var(--gold-light); }
+    .do-center { color: var(--saffron); font-size: 1.1rem; }
+
+    /* ── EVENTS ── */
+    .events-section {
+      padding: 5rem 2rem;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(244,136,10,0.1) 0%, transparent 55%),
+        linear-gradient(180deg, #fffbf3 0%, #fdf6ec 100%);
+    }
+    .events-section::before {
+      content: '';
+      display: block; height: 6px;
+      background: linear-gradient(90deg, var(--saffron) 0%, var(--gold-light) 25%, var(--crimson) 50%, var(--magenta) 75%, var(--saffron) 100%);
+    }
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2px; max-width: 960px; margin: 0 auto;
+      background: linear-gradient(135deg, var(--gold-light), var(--saffron));
+    }
+    .event-card {
+      background: var(--parchment); padding: 3rem 2rem; text-align: center;
+      position: relative; transition: transform 0.35s ease, box-shadow 0.35s ease; overflow: hidden;
+    }
+    .event-card::before { content: ''; position: absolute; inset: 9px; border: 1px solid rgba(201,144,10,0.22); pointer-events: none; }
+    .event-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--saffron), var(--magenta), var(--saffron));
+      transform: scaleX(0); transition: transform 0.4s ease;
+    }
+    .event-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(201,144,10,0.22); }
+    .event-card:hover::after { transform: scaleX(1); }
+    .event-ritual-symbol { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
+    .event-name { font-family: 'Cinzel', serif; font-size: 0.78rem; letter-spacing: 0.2em; color: var(--crimson); text-transform: uppercase; margin-bottom: 0.75rem; }
+    .event-desc { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.95rem; color: var(--ash); line-height: 1.75; margin-bottom: 1.5rem; }
+    .event-date-tag { font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 0.25em; color: var(--saffron); text-transform: uppercase; margin-bottom: 0.25rem; }
+    .event-time { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--ink); font-weight: 500; }
+
+    /* ── VENUE ── */
+    .venue-section {
+      padding: 6rem 2rem; text-align: center;
+      background:
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23c9900a' stroke-width='0.3' opacity='0.15'%3E%3Cpolygon points='30,5 55,20 55,40 30,55 5,40 5,20'/%3E%3Ccircle cx='30' cy='30' r='15'/%3E%3C/g%3E%3C/svg%3E"),
+        linear-gradient(160deg, #1a0d05 0%, #2e1a0a 50%, #1a0d05 100%);
+      background-size: 60px 60px, cover;
+    }
+    .venue-section .section-label { color: var(--saffron-light); }
+    .venue-section .section-title { color: var(--parchment-dark); }
+    .venue-section .do-line { background: rgba(226,176,69,0.4); }
+    .venue-section .do-center { color: var(--gold-light); }
+    .venue-diyas { display: flex; justify-content: center; gap: 2.5rem; margin-bottom: 2.5rem; }
+    .diya { font-size: 2.2rem; animation: flicker 1.6s ease-in-out infinite; }
+    .diya:nth-child(2) { animation-delay: 0.3s; }
+    .diya:nth-child(3) { animation-delay: 0.6s; }
+    @keyframes flicker {
+      0%,100% { transform: scale(1) rotate(-2deg); filter: brightness(1) drop-shadow(0 0 4px #fbbf49); }
+      40%      { transform: scale(1.1) rotate(3deg); filter: brightness(1.4) drop-shadow(0 0 10px #f4880a); }
+      70%      { transform: scale(0.95) rotate(-1deg); filter: brightness(0.9); }
+    }
+    .venue-card {
+      max-width: 580px; margin: 0 auto;
+      border: 1px solid rgba(226,176,69,0.3); padding: 3.5rem; position: relative;
+      background: rgba(255,255,255,0.03); backdrop-filter: blur(4px);
+    }
+    .venue-card::before, .venue-card::after { content: ''; position: absolute; width: 35px; height: 35px; }
+    .venue-card::before { top: 10px; left: 10px; border-top: 2px solid var(--gold-light); border-left: 2px solid var(--gold-light); }
+    .venue-card::after  { bottom: 10px; right: 10px; border-bottom: 2px solid var(--gold-light); border-right: 2px solid var(--gold-light); }
+    .venue-name { font-family: 'Pinyon Script', cursive; font-size: 3.2rem; color: var(--gold-light); margin-bottom: 0.5rem; line-height: 1.2; }
+    .venue-addr { font-family: 'IM Fell English', serif; font-style: italic; font-size: 1.05rem; color: rgba(253,246,236,0.6); line-height: 2; margin-bottom: 2rem; }
+    .venue-btn {
+      display: inline-block; font-family: 'Cinzel', serif; font-size: 0.65rem;
+      letter-spacing: 0.3em; color: var(--gold-light); border: 1px solid var(--gold-light);
+      padding: 0.8rem 2.2rem; text-decoration: none; text-transform: uppercase; transition: all 0.3s;
+    }
+    .venue-btn:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--ink); text-align: center; padding: 3.5rem 2rem; position: relative; overflow: hidden; }
+    footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--saffron), var(--gold-light), var(--magenta), var(--gold-light), var(--saffron)); }
+    .footer-om { font-size: 2.5rem; color: var(--gold-light); display: block; margin-bottom: 0.5rem; opacity: 0.6; }
+    .footer-names { font-family: 'Pinyon Script', cursive; font-size: 3rem; color: var(--gold-light); margin-bottom: 0.75rem; }
+    .footer-verse { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.95rem; color: rgba(253,246,236,0.4); margin-bottom: 1.5rem; }
+    .footer-divider { width: 60px; height: 1px; background: var(--gold-light); margin: 0 auto 1.5rem; opacity: 0.4; }
+    .footer-copy { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.3em; color: rgba(253,246,236,0.2); text-transform: uppercase; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp   { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeDown { from { opacity: 0; transform: translateX(-50%) translateY(-15px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+    @keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes floatIn  { from { opacity: 0; transform: translateY(35px) scale(0.88); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 600px) {
+      .events-grid { grid-template-columns: 1fr; }
+      .venue-card { padding: 2.5rem 1.5rem; }
+    }
+  
+    /* ── LOCATION BOX ── */
+    .location-box {
+      margin: 1.5rem 0;
+      text-align: left;
+    }
+    .location-box-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .location-link-row {
+      display: flex;
+      gap: 0;
+      border: 1px solid rgba(226,176,69,0.35);
+      overflow: hidden;
+    }
+    .location-input {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: none;
+      padding: 0.7rem 1rem;
+      font-family: 'IM Fell English', serif;
+      font-size: 0.75rem;
+      color: rgba(253,246,236,0.6);
+      outline: none;
+      cursor: text;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .copy-btn {
+      background: rgba(201,144,10,0.2);
+      border: none;
+      border-left: 1px solid rgba(226,176,69,0.35);
+      padding: 0.7rem 1.2rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .copy-btn:hover { background: rgba(201,144,10,0.45); }
+    .copy-hint {
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      color: #5a9a5a;
+      margin-top: 0.4rem;
+      height: 1rem;
+      transition: opacity 0.3s;
+    }
+
+    /* ── QR CODE ── */
+    .qr-wrapper {
+      margin: 2rem 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .qr-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.35em;
+      color: var(--gold-light);
+      text-transform: uppercase;
+    }
+    .qr-frame {
+      padding: 12px;
+      background: #fff;
+      border: 2px solid rgba(226,176,69,0.5);
+      box-shadow: 0 0 0 4px rgba(201,144,10,0.1), 0 8px 30px rgba(0,0,0,0.4);
+      position: relative;
+    }
+    .qr-frame::before, .qr-frame::after {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+    }
+    .qr-frame::before { top: -2px; left: -2px; border-top: 3px solid var(--gold-light); border-left: 3px solid var(--gold-light); }
+    .qr-frame::after  { bottom: -2px; right: -2px; border-bottom: 3px solid var(--gold-light); border-right: 3px solid var(--gold-light); }
+    .qr-img {
+      display: block;
+      width: 160px;
+      height: 160px;
+      image-rendering: pixelated;
+    }
+    .qr-subtext {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 0.8rem;
+      color: rgba(253,246,236,0.4);
+      letter-spacing: 0.03em;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Floating flower petals -->
+  <div class="petals-canvas" id="petals"></div>
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <section class="hero">
+    <div class="garland-top"></div>
+
+    <!-- Rotating mandalas -->
+    <svg class="mandala-bg" viewBox="0 0 400 400" fill="none">
+      <g stroke="#c9900a" stroke-width="0.6">
+        <circle cx="200" cy="200" r="180"/><circle cx="200" cy="200" r="145"/>
+        <circle cx="200" cy="200" r="110"/><circle cx="200" cy="200" r="70"/>
+        <circle cx="200" cy="200" r="35"/>
+        <ellipse cx="200" cy="125" rx="22" ry="65" transform="rotate(0 200 200)"/>
+        <ellipse cx="200" cy="125" rx="22" ry="65" transform="rotate(45 200 200)"/>
+        <ellipse cx="200" cy="125" rx="22" ry="65" transform="rotate(90 200 200)"/>
+        <ellipse cx="200" cy="125" rx="22" ry="65" transform="rotate(135 200 200)"/>
+        <polygon points="200,30 350,270 50,270" fill="none"/>
+        <polygon points="200,370 350,130 50,130" fill="none"/>
+        <line x1="200" y1="20" x2="200" y2="380"/>
+        <line x1="20" y1="200" x2="380" y2="200"/>
+        <line x1="58" y1="58" x2="342" y2="342"/>
+        <line x1="342" y1="58" x2="58" y2="342"/>
+        <line x1="20" y1="145" x2="380" y2="255"/>
+        <line x1="20" y1="255" x2="380" y2="145"/>
+        <line x1="145" y1="20" x2="255" y2="380"/>
+        <line x1="255" y1="20" x2="145" y2="380"/>
+      </g>
+    </svg>
+    <svg class="mandala-bg-2" viewBox="0 0 300 300" fill="none">
+      <g stroke="#a0132a" stroke-width="0.5">
+        <circle cx="150" cy="150" r="130"/><circle cx="150" cy="150" r="95"/>
+        <circle cx="150" cy="150" r="58"/>
+        <ellipse cx="150" cy="88" rx="16" ry="52" transform="rotate(0 150 150)"/>
+        <ellipse cx="150" cy="88" rx="16" ry="52" transform="rotate(30 150 150)"/>
+        <ellipse cx="150" cy="88" rx="16" ry="52" transform="rotate(60 150 150)"/>
+        <ellipse cx="150" cy="88" rx="16" ry="52" transform="rotate(90 150 150)"/>
+        <ellipse cx="150" cy="88" rx="16" ry="52" transform="rotate(120 150 150)"/>
+        <ellipse cx="150" cy="88" rx="16" ry="52" transform="rotate(150 150 150)"/>
+      </g>
+    </svg>
+
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <div class="top-ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-dot"></div>
+      <div class="ornament-dot"></div>
+      <div class="ornament-dot"></div>
+      <div class="ornament-line rev"></div>
+    </div>
+
+    <!-- OM symbol -->
+    <span class="om-symbol">ॐ</span>
+
+    <!-- ✨ GANESHA SVG ILLUSTRATION ✨ -->
+    <div class="ganesha-container">
+      <div class="ganesha-halo"></div>
+      <svg class="ganesha-svg" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="sg" cx="50%" cy="40%" r="65%">
+            <stop offset="0%" stop-color="#ffe090"/>
+            <stop offset="60%" stop-color="#f0ab30"/>
+            <stop offset="100%" stop-color="#d4880a"/>
+          </radialGradient>
+          <radialGradient id="tg" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#fdd060"/>
+            <stop offset="100%" stop-color="#d08a0a"/>
+          </radialGradient>
+          <radialGradient id="cg" cx="50%" cy="0%" r="100%">
+            <stop offset="0%" stop-color="#ffe566"/>
+            <stop offset="100%" stop-color="#b8860b"/>
+          </radialGradient>
+          <filter id="gl"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="softGlow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+
+        <!-- Halo glow rings -->
+        <circle cx="100" cy="85" r="72" fill="none" stroke="#fbbf49" stroke-width="0.8" opacity="0.4" filter="url(#softGlow)"/>
+        <circle cx="100" cy="85" r="80" fill="none" stroke="#f4880a" stroke-width="0.5" opacity="0.25"/>
+
+        <!-- Lotus base petals -->
+        <g fill="#f4880a" opacity="0.9">
+          <ellipse cx="100" cy="218" rx="13" ry="16" transform="rotate(-40 100 218)"/>
+          <ellipse cx="100" cy="218" rx="13" ry="16" transform="rotate(-20 100 218)"/>
+          <ellipse cx="100" cy="218" rx="13" ry="16" transform="rotate(0 100 218)"/>
+          <ellipse cx="100" cy="218" rx="13" ry="16" transform="rotate(20 100 218)"/>
+          <ellipse cx="100" cy="218" rx="13" ry="16" transform="rotate(40 100 218)"/>
+          <ellipse cx="100" cy="218" rx="13" ry="16" transform="rotate(60 100 218)"/>
+          <ellipse cx="100" cy="218" rx="13" ry="16" transform="rotate(80 100 218)"/>
+          <ellipse cx="100" cy="218" rx="13" ry="16" transform="rotate(100 100 218)"/>
+          <ellipse cx="100" cy="218" rx="13" ry="16" transform="rotate(120 100 218)"/>
+          <ellipse cx="100" cy="218" rx="13" ry="16" transform="rotate(140 100 218)"/>
+          <ellipse cx="100" cy="218" rx="13" ry="16" transform="rotate(160 100 218)"/>
+          <ellipse cx="100" cy="218" rx="13" ry="16" transform="rotate(180 100 218)"/>
+        </g>
+        <ellipse cx="100" cy="216" rx="22" ry="9" fill="#fbbf49"/>
+        <ellipse cx="100" cy="214" rx="10" ry="5" fill="#f4880a"/>
+
+        <!-- Body -->
+        <ellipse cx="100" cy="170" rx="52" ry="50" fill="url(#sg)"/>
+        <!-- Belly highlight -->
+        <ellipse cx="100" cy="177" rx="30" ry="26" fill="url(#tg)" opacity="0.55"/>
+        <ellipse cx="96" cy="172" rx="10" ry="8" fill="rgba(255,255,255,0.15)"/>
+
+        <!-- Dhoti -->
+        <path d="M52 185 Q62 232 100 226 Q138 232 148 185 Q128 197 100 197 Q72 197 52 185Z" fill="#a0132a" opacity="0.92"/>
+        <!-- Dhoti folds -->
+        <path d="M65 200 Q70 225 85 228" stroke="#7a0e1e" stroke-width="1.5" fill="none" opacity="0.6"/>
+        <path d="M100 200 Q100 228 100 228" stroke="#7a0e1e" stroke-width="1.5" fill="none" opacity="0.6"/>
+        <path d="M135 200 Q130 225 115 228" stroke="#7a0e1e" stroke-width="1.5" fill="none" opacity="0.6"/>
+        <!-- Dhoti gold border -->
+        <path d="M52 188 Q100 200 148 188" stroke="#fbbf49" stroke-width="1.5" fill="none" opacity="0.7"/>
+
+        <!-- Upper drape -->
+        <path d="M54 157 Q42 148 46 138 Q57 158 100 156 Q143 158 154 138 Q158 148 146 157Z" fill="#b52270" opacity="0.85"/>
+        <!-- Drape border -->
+        <path d="M54 157 Q100 163 146 157" stroke="#fbbf49" stroke-width="1" fill="none" opacity="0.5"/>
+
+        <!-- Garland of flowers -->
+        <path d="M56 160 Q100 172 144 160" stroke="#2a7a3a" stroke-width="2" fill="none"/>
+        <circle cx="64" cy="164" r="5" fill="#f4880a"/>
+        <circle cx="76" cy="168" r="4" fill="#fbbf49"/>
+        <circle cx="88" cy="171" r="5" fill="#f4880a"/>
+        <circle cx="100" cy="172" r="5.5" fill="#fbbf49"/>
+        <circle cx="112" cy="171" r="5" fill="#f4880a"/>
+        <circle cx="124" cy="168" r="4" fill="#fbbf49"/>
+        <circle cx="136" cy="164" r="5" fill="#f4880a"/>
+
+        <!-- Left upper arm -->
+        <ellipse cx="60" cy="148" rx="17" ry="12" fill="url(#sg)" transform="rotate(-38 60 148)"/>
+        <!-- Right upper arm -->
+        <ellipse cx="140" cy="142" rx="17" ry="12" fill="url(#sg)" transform="rotate(38 140 142)"/>
+
+        <!-- Left lower arm (modak) -->
+        <ellipse cx="53" cy="164" rx="15" ry="10" fill="url(#sg)" transform="rotate(-22 53 164)"/>
+        <ellipse cx="42" cy="174" rx="13" ry="9" fill="url(#sg)" transform="rotate(-10 42 174)"/>
+        <!-- Modak -->
+        <ellipse cx="34" cy="183" rx="12" ry="10" fill="#fbbf49"/>
+        <ellipse cx="34" cy="178" rx="8" ry="6" fill="#f4880a"/>
+        <ellipse cx="34" cy="175" rx="5" ry="3" fill="#fdd060"/>
+
+        <!-- Right lower arm (blessing gesture) -->
+        <ellipse cx="147" cy="155" rx="15" ry="10" fill="url(#sg)" transform="rotate(28 147 155)"/>
+        <ellipse cx="158" cy="144" rx="13" ry="9" fill="url(#sg)" transform="rotate(12 158 144)"/>
+        <!-- Fingers -->
+        <ellipse cx="164" cy="136" rx="8" ry="12" fill="url(#sg)"/>
+        <line x1="158" y1="128" x2="155" y2="118" stroke="#d4880a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="164" y1="126" x2="163" y2="116" stroke="#d4880a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="170" y1="128" x2="170" y2="118" stroke="#d4880a" stroke-width="3" stroke-linecap="round"/>
+
+        <!-- Bracelets -->
+        <ellipse cx="46" cy="174" rx="10" ry="4" fill="none" stroke="#fbbf49" stroke-width="2" transform="rotate(-15 46 174)"/>
+        <ellipse cx="157" cy="148" rx="10" ry="4" fill="none" stroke="#fbbf49" stroke-width="2" transform="rotate(15 157 148)"/>
+
+        <!-- Neck -->
+        <ellipse cx="100" cy="118" rx="23" ry="12" fill="url(#sg)"/>
+        <!-- Necklace -->
+        <path d="M77 116 Q100 128 123 116" stroke="#b8860b" stroke-width="2.5" fill="none"/>
+        <circle cx="100" cy="126" r="5" fill="#fbbf49" filter="url(#gl)"/>
+        <circle cx="89" cy="122" r="3" fill="#fbbf49"/>
+        <circle cx="111" cy="122" r="3" fill="#fbbf49"/>
+        <circle cx="82" cy="118" r="2" fill="#e2b045"/>
+        <circle cx="118" cy="118" r="2" fill="#e2b045"/>
+
+        <!-- HEAD -->
+        <ellipse cx="100" cy="88" rx="51" ry="50" fill="url(#sg)"/>
+
+        <!-- Ears -->
+        <ellipse cx="51" cy="88" rx="23" ry="32" fill="url(#sg)"/>
+        <ellipse cx="51" cy="88" rx="14" ry="22" fill="#f8d070" opacity="0.45"/>
+        <path d="M33 80 Q38 90 34 102" stroke="#d4880a" stroke-width="1" fill="none" opacity="0.4"/>
+        <!-- Left earring -->
+        <circle cx="33" cy="100" r="6" fill="#b8860b"/>
+        <circle cx="33" cy="100" r="3.5" fill="#fbbf49"/>
+        <circle cx="33" cy="100" r="1.5" fill="#a0132a"/>
+
+        <ellipse cx="149" cy="88" rx="23" ry="32" fill="url(#sg)"/>
+        <ellipse cx="149" cy="88" rx="14" ry="22" fill="#f8d070" opacity="0.45"/>
+        <!-- Right earring -->
+        <circle cx="167" cy="100" r="6" fill="#b8860b"/>
+        <circle cx="167" cy="100" r="3.5" fill="#fbbf49"/>
+        <circle cx="167" cy="100" r="1.5" fill="#a0132a"/>
+
+        <!-- Eyes -->
+        <ellipse cx="81" cy="79" rx="11" ry="10" fill="white"/>
+        <ellipse cx="83" cy="80" rx="7" ry="8" fill="#1a0800"/>
+        <circle cx="84" cy="78" r="2.5" fill="white"/>
+        <!-- Eye lashes / brow -->
+        <path d="M71 73 Q81 67 92 73" stroke="#c9900a" stroke-width="1.5" fill="none" opacity="0.7"/>
+        <path d="M71 73 Q76 70 80 73" stroke="#1a0800" stroke-width="1.5" fill="none"/>
+        <path d="M83 71 Q88 68 92 73" stroke="#1a0800" stroke-width="1.5" fill="none"/>
+
+        <ellipse cx="119" cy="79" rx="11" ry="10" fill="white"/>
+        <ellipse cx="117" cy="80" rx="7" ry="8" fill="#1a0800"/>
+        <circle cx="118" cy="78" r="2.5" fill="white"/>
+        <path d="M109 73 Q119 67 130 73" stroke="#c9900a" stroke-width="1.5" fill="none" opacity="0.7"/>
+        <path d="M109 73 Q114 70 118 73" stroke="#1a0800" stroke-width="1.5" fill="none"/>
+        <path d="M121 71 Q126 68 130 73" stroke="#1a0800" stroke-width="1.5" fill="none"/>
+
+        <!-- Third eye -->
+        <ellipse cx="100" cy="72" rx="7" ry="5.5" fill="#a0132a"/>
+        <ellipse cx="100" cy="72" rx="4" ry="3.2" fill="#fbbf49"/>
+        <ellipse cx="100" cy="72" rx="1.5" ry="1.2" fill="#a0132a"/>
+
+        <!-- Tikka -->
+        <line x1="100" y1="67" x2="100" y2="60" stroke="#b8860b" stroke-width="1.5"/>
+        <circle cx="100" cy="59" r="3" fill="#fbbf49"/>
+
+        <!-- TRUNK (curling to left, auspiciously) -->
+        <path d="M95 102 Q75 116 70 134 Q65 154 73 166 Q82 176 90 170 Q98 162 93 148 Q88 130 100 114"
+              fill="url(#sg)" stroke="#d4880a" stroke-width="0.8"/>
+        <!-- Trunk stripes -->
+        <path d="M86 136 Q80 140 76 148" stroke="rgba(0,0,0,0.08)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M84 154 Q79 160 80 167" stroke="rgba(0,0,0,0.08)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <!-- Trunk tip -->
+        <ellipse cx="82" cy="172" rx="9" ry="7" fill="url(#sg)" transform="rotate(25 82 172)"/>
+
+        <!-- Left tusk (broken — Ganesha wrote Mahabharata with it) -->
+        <path d="M87 106 Q78 122 80 138" stroke="#fffef0" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M87 106 Q78 122 80 138" stroke="#f0ecd0" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <line x1="80" y1="135" x2="77" y2="143" stroke="#fffef0" stroke-width="5" stroke-linecap="round"/>
+        <!-- Break on tusk -->
+        <line x1="79" y1="137" x2="84" y2="134" stroke="#e8d8b0" stroke-width="2"/>
+
+        <!-- Right tusk (full) -->
+        <path d="M113 106 Q122 116 120 128" stroke="#fffef0" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M113 106 Q122 116 120 128" stroke="#f0ecd0" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+        <!-- CROWN / Mukut -->
+        <path d="M55 65 Q62 28 100 18 Q138 28 145 65Z" fill="url(#cg)" filter="url(#gl)" opacity="0.95"/>
+        <!-- Crown spires -->
+        <polygon points="68,60 72,35 78,58" fill="#ffd700" opacity="0.9"/>
+        <polygon points="86,56 91,26 97,54" fill="#ffe566" opacity="0.95"/>
+        <polygon points="100,54 100,16 106,54" fill="#ffd700"/>
+        <polygon points="103,54 109,26 115,56" fill="#ffe566" opacity="0.95"/>
+        <polygon points="122,58 128,35 132,60" fill="#ffd700" opacity="0.9"/>
+        <!-- Crown gems -->
+        <circle cx="72" cy="50" r="3" fill="#a0132a"/>
+        <circle cx="91" cy="40" r="3" fill="#b52270"/>
+        <circle cx="100" cy="25" r="5" fill="#a0132a" filter="url(#gl)"/>
+        <circle cx="100" cy="24" r="2.5" fill="#ff9ac0" opacity="0.7"/>
+        <circle cx="109" cy="40" r="3" fill="#b52270"/>
+        <circle cx="128" cy="50" r="3" fill="#a0132a"/>
+        <!-- Crown base band -->
+        <rect x="55" y="60" width="90" height="9" rx="4.5" fill="#b8860b"/>
+        <circle cx="70" cy="64.5" r="3.5" fill="#fbbf49"/>
+        <circle cx="82" cy="64.5" r="3" fill="#e2b045"/>
+        <circle cx="94" cy="64.5" r="3" fill="#fbbf49"/>
+        <circle cx="100" cy="64.5" r="4" fill="#ffd700" filter="url(#gl)"/>
+        <circle cx="106" cy="64.5" r="3" fill="#fbbf49"/>
+        <circle cx="118" cy="64.5" r="3" fill="#e2b045"/>
+        <circle cx="130" cy="64.5" r="3.5" fill="#fbbf49"/>
+
+        <!-- Mouse (vahana) peek at bottom -->
+        <ellipse cx="115" cy="226" rx="12" ry="8" fill="#d4a040" opacity="0.7"/>
+        <circle cx="120" cy="222" r="4" fill="#d4a040" opacity="0.7"/>
+        <ellipse cx="122" cy="220" rx="2" ry="3" fill="#d4a040" opacity="0.7" transform="rotate(-30 122 220)"/>
+        <ellipse cx="125" cy="220" rx="2" ry="3" fill="#d4a040" opacity="0.7" transform="rotate(20 125 220)"/>
+        <circle cx="121" cy="220" r="1" fill="#1a0800"/>
+        <!-- Mouse tail -->
+        <path d="M103 228 Q108 220 112 226" stroke="#c09030" stroke-width="1.5" fill="none"/>
+
+        <!-- Floating flowers around Ganesha -->
+        <text x="24" y="58" font-size="11" opacity="0.7" transform="rotate(-15 24 58)">🌸</text>
+        <text x="164" y="50" font-size="10" opacity="0.6" transform="rotate(12 164 50)">✿</text>
+        <text x="18" y="160" font-size="9" opacity="0.5" transform="rotate(-10 18 160)">❀</text>
+        <text x="168" y="165" font-size="10" opacity="0.6" transform="rotate(8 168 165)">🌼</text>
+      </svg>
+    </div>
+
+    <p class="shri-text">॥ Shri Ganeshaya Namah ॥</p>
+
+    <p class="ritual-label">A Sacred Union · Celebrated in the Ancient Way</p>
+
+    <div class="names-wrapper">
+      <span class="name-groom">Rajesh</span>
+      <div class="names-divider">
+        <div class="div-line"></div>
+        <span class="div-symbol">&#8853; weds &#8853;</span>
+        <div class="div-line"></div>
+      </div>
+      <span class="name-bride">Rachana</span>
+    </div>
+
+    <p class="sacred-verse">
+      "Two souls, one destiny — bound not merely by vow,<br>
+      but by the eternal thread that the cosmos wove<br>
+      long before either was born."
+    </p>
+
+    <div class="request-block">
+      <p>
+        With the blessings of our families<br>
+        <span class="family-name">The Yadav Family</span> <br>
+        joyfully invite you to witness and celebrate<br>
+        this sacred union
+      </p>
+    </div>
+
+    <div class="date-seal">
+      <div class="seal-ring">
+        <span class="seal-month">April</span>
+        <span class="seal-day">20</span>
+        <span class="seal-year">2026</span>
+      </div>
+    </div>
+
+    <div class="scroll-cue">
+      <span></span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ EVENTS ═══════════ -->
+  <section class="events-section">
+    <p class="section-label reveal"></p>
+    <h2 class="section-title reveal">Ritual Ceremonies</h2>
+    <div class="divider-ornament reveal">
+      <div class="do-line"></div>
+      <span class="do-center">✦</span>
+      <div class="do-line"></div>
+    </div>
+    <div class="events-grid">
+    <div class="event-card reveal">
+        <span class="event-ritual-symbol">🌸</span>
+        <div class="event-name">Tilak Ceremoony</div>
+        <p class="event-desc">As henna weaves its stories on hands and heart, music fills the air and joy overflows into the night.</p>
+        <div class="event-date-tag">15 April 2026</div>
+      </div>
+    </div>
+    <div class="event-card reveal">
+        <span class="event-ritual-symbol">🪔</span>
+        <div class="event-name">Haldi Ceremony</div>
+        <p class="event-desc">An ancient rite of purification — turmeric and blessings applied by loved ones to prepare the soul for union.</p>
+        <div class="event-date-tag">18 April 2026</div>
+      </div>
+      <div class="event-card reveal">
+        <span class="event-ritual-symbol">✨</span>
+        <div class="event-name">Mehendi Evening</div>
+        <p class="event-desc">A sacred seal of honor and acceptance — an auspicious mark applied to the brow to invite divine grace and formalize a lifelong commitment.</p>
+        <div class="event-date-tag">19 April 2026</div>
+      </div>
+      <div class="event-card reveal">
+        <span class="event-ritual-symbol">🔥</span>
+        <div class="event-name">Wedding Ceremony</div>
+        <p class="event-desc">The sacred saptapadi — seven vows around the holy fire, witnessed by the divine and all who are cherished.</p>
+        <div class="event-date-tag">20 April 2026</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ VENUE ═══════════ -->
+  <section class="venue-section">
+    <p class="section-label reveal">The Sacred Ground</p>
+    <h2 class="section-title reveal">Where We Gather</h2>
+    <div class="divider-ornament reveal">
+      <div class="do-line"></div>
+      <span class="do-center">✦</span>
+      <div class="do-line"></div>
+    </div>
+    <div class="venue-diyas reveal">
+      <span class="diya">🪔</span>
+      <span class="diya">🪔</span>
+      <span class="diya">🪔</span>
+    </div>
+    <div class="venue-card reveal">
+      <div class="venue-name">Vinayak Palace</div>
+      <p class="venue-addr">
+        Shyam Chak, near SBI Bank<br>
+        Chapra, Bihar 841305<br>
+        India
+      </p>
+
+      <!-- Location link text box -->
+      <div class="location-box">
+        <p class="location-box-label">📍 Location Link</p>
+        <div class="location-link-row">
+          <input type="text" class="location-input" id="locLink" readonly
+            value="https://www.google.com/maps?sca_esv=9f9eb050cfa925d8&biw=1536&bih=782&output=search&q=vinayak+palace+location+chapra&source=lnms&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpUrv6YeyJhXfuYqj4Fj6c1SIV4w5e5qANUAPGe3KAH5wqMbqWraPBL3--aum4J-4yT3pVFeFVF9im6gtsdgJ0Sm5yrmIm59hGQiwN7SKX0jAHcaeEyCN4SCHh2IMOm0gaQRNU32JSS7VR9sTOeJ1roa5yj9eDEusifkfZJlTfxpOSMF_pf3kFvQN6nNI3SZmGNbgnmQ&entry=mc&ved=1t:200715&ictx=111" />
+          <button class="copy-btn" onclick="copyLink()">Copy</button>
+        </div>
+        <p class="copy-hint" id="copyHint"></p>
+      </div>
+
+      <!-- QR Code -->
+      <div class="qr-wrapper">
+        <p class="qr-label">Scan to Navigate</p>
+        <div class="qr-frame">
+          <img src="data:image/png;base64,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" alt="Location QR Code" class="qr-img" />
+        </div>
+        <p class="qr-subtext">Point your camera at the QR code to get directions</p>
+      </div>
+
+      <a target="_blank" href="https://www.google.com/maps?sca_esv=9f9eb050cfa925d8&biw=1536&bih=782&output=search&q=vinayak+palace+location+chapra&source=lnms&fbs=ADc_l-aN0CWEZBOHjofHoaMMDiKpUrv6YeyJhXfuYqj4Fj6c1SIV4w5e5qANUAPGe3KAH5wqMbqWraPBL3--aum4J-4yT3pVFeFVF9im6gtsdgJ0Sm5yrmIm59hGQiwN7SKX0jAHcaeEyCN4SCHh2IMOm0gaQRNU32JSS7VR9sTOeJ1roa5yj9eDEusifkfZJlTfxpOSMF_pf3kFvQN6nNI3SZmGNbgnmQ&entry=mc&ved=1t:200715&ictx=111" class="venue-btn">Open in Google Maps</a>
+    </div>
+  </section>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer>
+    <span class="footer-om">ॐ</span>
+    <div class="footer-names">Rajesh &amp; Rachana</div>
+    
+    <div class="footer-divider"></div>
+    <p class="footer-copy">20 · 04 · 2026 &nbsp;·&nbsp; Chapra, India</p>
+  </footer>
+
+  <script>
+    // Floating petals
+    const petalsEl = document.getElementById('petals');
+    const petalTypes = ['🌸','🌺','🪷','🌼','✿','❀','🌹'];
+
+    function createPetal() {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.textContent = petalTypes[Math.floor(Math.random() * petalTypes.length)];
+      const dur = 7 + Math.random() * 10;
+      const delay = Math.random() * 8;
+      p.style.cssText = `
+        left: ${Math.random() * 100}vw;
+        animation-duration: ${dur}s;
+        animation-delay: -${delay}s;
+        font-size: ${0.6 + Math.random() * 0.9}rem;
+        opacity: ${0.4 + Math.random() * 0.5};
+      `;
+      petalsEl.appendChild(p);
+      setTimeout(() => p.remove(), (dur + delay) * 1000);
+    }
+
+    for (let i = 0; i < 20; i++) setTimeout(createPetal, i * 350);
+    setInterval(createPetal, 1100);
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+      el.style.transitionDelay = `${(i % 4) * 0.12}s`;
+      observer.observe(el);
+    });
+  
+    function copyLink() {
+      const input = document.getElementById('locLink');
+      input.select();
+      input.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(input.value).then(() => {
+        const hint = document.getElementById('copyHint');
+        hint.textContent = '✦ Link copied to clipboard!';
+        setTimeout(() => { hint.textContent = ''; }, 2500);
+      }).catch(() => {
+        document.execCommand('copy');
+        const hint = document.getElementById('copyHint');
+        hint.textContent = '✦ Link copied!';
+        setTimeout(() => { hint.textContent = ''; }, 2500);
+      });
+    }
+
+  </script>
+</body>
+</html>
